@@ -2,6 +2,7 @@ import numpy as np
 import cv2
 import os
 import matplotlib.pyplot as plt
+import datetime
 
 directory = "./RobloxHome"
 loadDir = "/RobloxImages/"
@@ -45,23 +46,27 @@ for filename in os.listdir(directory + loadDir):
     colorAverages.append(averageColor)
     print(averageColor)
 
-x = np.array(range(len(colorAverages)))
+dates = []
+for file in fileNames:
+    dates.append(datetime.date(int(file[5:]), int(file[:2]), int(file[3:5])))
+
+x = np.array(dates)
 y = np.array(colorAverages)
 
 yav = (y[:, 0] + y[:, 1] + y[:, 2])/3
 
-plt.plot(x, y[:, 0], color="blue")
-plt.plot(x, y[:, 1], color="green")
-plt.plot(x, y[:, 2], color="red")
-plt.plot(x, yav, color="black")
-index = 0
-for xp,yp in zip(x,y[:, 0]):
-    plt.annotate(fileNames[index], (xp, yp), textcoords="offset points", xytext=(0,10), ha='center')
-    index += 1
+plt.plot(x, y[:, 0], color="blue", linestyle='--')
+plt.plot(x, y[:, 1], color="green", linestyle='--')
+plt.plot(x, y[:, 2], color="red", linestyle='--')
+plt.plot(x, yav, color="black", marker='o')
+# index = 0
+# for xp,yp in zip(x,y[:, 0]):
+#     plt.annotate(fileNames[index], (xp, yp), textcoords="offset points", xytext=(0,10), ha='center')
+#     index += 1
 plt.ylim(0, 255)
 plt.title("Average Colors")
 plt.xlabel("Date")
 plt.ylabel("Colors")
-ax = plt.gca()
-ax.axes.xaxis.set_ticklabels([])
+# ax = plt.gca()
+# ax.axes.xaxis.set_ticklabels([])
 plt.show()
